@@ -1,0 +1,58 @@
+<%@ page import= "Model.*" %>
+<%@ page import= "java.util.*" %>
+
+<%
+	Student student_obj = new Student();
+	if((request.getParameter("act")).equals("Save"))
+	{
+		HashMap student_data = new HashMap();
+		student_data.put("student_id",request.getParameter("student_id"));
+		student_data.put("student_user",request.getParameter("student_user"));
+		student_data.put("student_password",request.getParameter("student_password"));
+		student_data.put("student_level","1");
+		student_data.put("student_sal",request.getParameter("student_sal"));
+		student_data.put("student_first_name",request.getParameter("student_first_name"));
+		student_data.put("student_middle_name",request.getParameter("student_middle_name"));
+		student_data.put("student_last_name",request.getParameter("student_last_name"));
+		student_data.put("student_gender",request.getParameter("student_gender"));
+		student_data.put("student_address",request.getParameter("student_address"));
+		student_data.put("student_village",request.getParameter("student_village"));
+		student_data.put("student_state",request.getParameter("student_state"));
+		student_data.put("student_country",request.getParameter("student_country"));
+		student_data.put("student_landline",request.getParameter("student_landline"));
+		student_data.put("student_mobile",request.getParameter("student_mobile"));
+		student_data.put("student_email",request.getParameter("student_email"));
+		student_data.put("student_status",request.getParameter("student_status"));
+		student_data.put("student_deparment",request.getParameter("student_deparment"));
+		student_data.put("student_dob",request.getParameter("student_dob"));
+		student_data.put("student_nationalty",request.getParameter("student_nationalty"));
+	
+		if((request.getParameter("student_id")).equals(""))
+		{
+			student_obj.saveStudent(student_data);
+			if(request.getParameter("student_id").equals("") && session.getAttribute("login_level") == null )
+			{
+				response.sendRedirect("../login.jsp?title=&msg=You have registered successfully.<br>Login to access your account.");
+			}
+			else
+			{
+				response.sendRedirect("../report-student.jsp?msg=Customer Saved Successfully");
+			}
+		}
+		else
+		{
+			student_data.put("student_id",request.getParameter("student_id"));
+			out.print(student_obj.updateStudent(student_data));
+			
+			if(request.getParameter("student_id").equals(session.getAttribute("login_emp_id")))
+			{
+				response.sendRedirect("../student.jsp?student_id="+session.getAttribute("login_emp_id")+"&msg=Account Updated Successfully");
+			}
+			else
+			{
+				response.sendRedirect("../report-student.jsp?msg=Customer Updated Successfully");
+			}
+		}
+	}
+%>
+	
